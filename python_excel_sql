@@ -1,0 +1,37 @@
+Aqui é um código que fiz para incluir informação de uma planilha do excel no banco de dados com python, durante meu estágio porquê a planilha estava muito pesada com as informações.
+Algumas informações vou substituir por nomes_sinônimos por questões da ética e sigilo profissional, segue o código.
+
+#pd no caso é um apelido da biblioteca pandas
+import mysql.connector
+import pandas as pd
+
+
+# ISSO É PARA REALIZAR A CONEXÃO COM O BANCO DE DADOS
+conexao = mysql.connector.connect(
+    host='aqui_coloque_o_local_host_encontrado_no_seu_banco',
+    port='3306', #isso normalmente é padrão
+    user='nome_do_usuário',
+    password='senha',
+    database='nome_do_banco_de_dados'
+)
+
+cursor = conexao.cursor()
+
+# ler a planilha
+planilha = pd.read_excel('nome_da_planilha.xlsx')
+sheet = 'nome_da_sua_aba'
+
+# ESSA querysql (VARIAVEL) E PARA REALIZAR ALGO DENTRO DO BANCO
+# No caso é um for para correr em todas as linhas e salvar os dados no banco enquanto tiver informação
+
+for index, row in planilha.iterrows():
+    querysql = 'INSERT INTO nome_da_sua_planilha (mesano, fecha, cosecha, zona, puerto) VALUES (%s, %s, %s, %s, %s)'
+    cursor.execute(querysql, tuple(row))
+
+
+# conexao.commit e para confirmar a mudança
+conexao.commit()
+
+# fechar a conexão do banco
+cursor.close()
+conexao.close()
