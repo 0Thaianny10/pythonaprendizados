@@ -1,0 +1,56 @@
+# Calculadora SIMPLES
+
+
+while True:
+
+    print("1 - Adição")
+    print("2 - Subtração")
+    print("3 - Multiplicação")
+    print("4 - Divisão")
+    print("5 - Encerrar")
+    
+    op = int(input("Escolha uma opção (1-5): "))
+
+    #SAIR
+
+    if op == 5:
+        print("Calculadora Finalizada") 
+        break
+
+    
+    valor1 = float(input("Digite o primeiro número:"))
+    valor2 = float(input("Digite o segundo número:"))
+
+#ADIÇÃO
+    if op == 1:
+        resultado = valor1 + valor2
+        print("O resultado é", resultado)
+    
+
+#SUBSTRAÇÃO
+
+    elif op == 2:
+        resultado = valor1 - valor2
+        print("O resultado é", resultado)
+
+
+#MULTIPLICAÇÃO
+
+    elif op == 3:
+        resultado = valor1 * valor2
+        print("O resultado é", resultado)
+
+#DIVISÃO
+
+    elif op == 4:
+        if valor2 != 0:
+            
+            resultado = valor1 / valor2
+            print("O resultado é", resultado)
+
+        else:
+            print("Erro: divisão por zero")
+
+    elif op == 5:
+        print("Calculadora encerrada")
+    
