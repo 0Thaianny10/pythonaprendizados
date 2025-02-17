@@ -1,0 +1,50 @@
+
+# sistema simulando Caixa eletrônico, com uso da linguagem Python e alguns lações de repetição
+
+saldo = 1000.00
+# enquanto for verdade, a informação a abaixo vai ser repetir até que o usuário clique a opção 4 e saia
+while True:
+
+    print("\nCaixa Eletrônico")
+    print("1 - Verificar Saldo")
+    print("2 - Depositar Dinheiro")
+    print("3 - Sacar Dinheiro")
+    print("4 - SAIR")
+    op = int(input("Escolha uma opção (1-4): "))
+
+    print()
+# aqui é para visualizar o saldo
+    if op == 1:
+
+        print(f"Seu saldo é R$ {saldo:.2f}")
+
+    elif op == 2: # aqui é para depositar
+
+        deposito = float(input("Informe o valor do deposito: R$ "))
+
+        if deposito > 0: # adicionado o valor de deposito ao saldo
+            saldo += deposito
+            print(f"Depósito R$ {deposito:.2f} realizado com sucesso")
+
+        else:
+            print(f"Valor de depósito inválido.")
+
+    elif op == 3: # aqui é para fazer o saque
+
+        saque = float(input("Informe o valor do saque: R$ "))
+
+        if saque > 0 and saque <= saldo: # faz uma verificação pra não sair dando dinheio kkkk
+            saldo -= saque
+            print(f"Saque de R$ {saque:.2f} realizado com sucesso")
+            
+        else:
+            print("Valor de saque inválido ou saldo insuficiente.")
+
+    elif op == 4:
+
+        print("Encerrando Caixa eletrônico")
+        break
+
+    else:
+
+        print("Selecione uma opção válida")
