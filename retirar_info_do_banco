@@ -1,0 +1,79 @@
+COMENTÁRIO: Eu criei esse código com a ajuda de IA, fiz os ajustes do banco de dados, esse código é para trazer informações do banco baseado na última data que consta na planilha.
+Não é algo maravilhoso, mas é algo que uso diariamente e senti a necessidade de atualizar, quem usa os dados são os gestores do processo. Quando não era atualizado, eles ou eu tinha que colocar manualmente.
+O código polpa esse trabalho e mantém a informação atualizada.
+
+
+
+Option Explicit
+
+Sub AtualizarSoja()
+
+    Dim conn As Object
+    Dim rs As Object
+    Dim ws As Worksheet
+    Dim ultimaLinha As Long
+    Dim ultimaCol As Long
+    Dim dtDate As String
+    Dim fkPort As String
+    Dim codigo As String
+    Dim i As Long
+    Dim valor As Variant
+    Dim query As String
+    
+    
+    '--- planilha
+    Set ws = ThisWorkbook.Sheets("NOME_DA_ABA") 
+    
+    '--- pega última linha de datas
+    ultimaLinha = ws.Cells(ws.Rows.Count, "A").End(xlUp).Row
+    dtDate = Format(ws.Cells(ultimaLinha, "A").Value, "yyyy-mm-dd")
+    
+    '--- fk_port na célula A2
+    fkPort = ws.Range("A2").Value
+    
+    '--- última coluna com códigos talvez eu troque isso porque eu não quero que percorra toda a planilha
+    ultimaCol = ws.Cells(2, ws.Columns.Count).End(xlToLeft).Column
+    
+     Set conn = CreateObject("ADODB.Connection")
+    conn.Open "DSN=mysql_aws;"
+    
+
+    '--- loop nos códigos da linha 2
+    For i = 2 To ultimaCol
+        
+        codigo = ws.Cells(2, i).Value
+        
+        If codigo <> "" Then
+            '--- monta SQL
+           query = "SELECT basis " & _
+                   "FROM NOME_DO_BANCO.NOME_DA_TABELA a " & _
+                   "INNER JOIN NOME_DA_TABELA b ON a.NOME_COLUNA = b.id " & _
+                   "INNER JOIN NOME_DA_TABELA c ON a.NOME_COLUNA = c.id " & _
+                   "WHERE code = '" & codigo & "' " & _
+                   "AND NOME_COLUNA = " & fkPort & " " & _
+                   "AND a.NOME_COLUNA = 1 " & _
+                   "AND NOME_COLUNA = '" & dtDate & "' " & _
+                   "AND NOME_COLUNA = 'TL' " & _
+                   "ORDER BY NOME_COLUNA DESC " & _
+                   "LIMIT 1;"
+            
+            Set rs = conn.Execute(query)
+            
+            If Not rs.EOF Then
+                valor = rs.Fields(0).Value
+                ws.Cells(ultimaLinha, i).Value = valor
+            Else
+                ws.Cells(ultimaLinha, i).Value = "" ' se não achar, deixa em branco
+            End If
+            
+            rs.Close
+        End If
+        
+    Next i
+    
+    conn.Close
+    Set conn = Nothing
+    
+    MsgBox "Basis Soja Atualizado!", vbInformation
+
+End Sub
