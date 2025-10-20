@@ -2,7 +2,7 @@ COMENTÁRIO: Eu criei esse código com a ajuda de IA, fiz os ajustes do banco de
 Não é algo maravilhoso, mas é algo que uso diariamente e senti a necessidade de atualizar, quem usa os dados são os gestores do processo. Quando não era atualizado, eles ou eu tinha que colocar manualmente.
 O código polpa esse trabalho e mantém a informação atualizada.
 
-
+OBS: Esse código é em VBA.
 
 Option Explicit
 
