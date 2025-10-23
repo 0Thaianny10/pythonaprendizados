@@ -1,0 +1,75 @@
+#Documentação e anotações de funções
+
+def somar(a,b):
+
+    """
+    Função que retornar a soma de dois números
+    Parâmetros:
+    a (int ou float): Primeiro número.
+    b (int ou float): Segundo número.
+    Retonar int ou float: soma de a e b
+    """
+    return a + b
+
+print(somar(2,3))
+print(somar.__doc__) # imprimirá os comentários feitos na função :)
+
+
+_____________________________________________________________
+
+#Recursão
+
+def contar_regressivamente(n):
+    if n > 0:
+
+        print(n)
+        contar_regressivamente(n-1)
+        
+contar_regressivamente(5)
+
+______________________________________________________________
+#Fatorial
+
+def fatorial(n):
+    
+    if n ==0:
+        return 1
+    else:
+        return n*fatorial(n-1)
+
+print(fatorial(5))
+___________________________________________________________
+def recursao_infinita(n):
+    print(n)
+    return recursao_infinita(n+1)
+
+recursao_infinita(1)
+
+#vai dar erro, pois não tem limitação, essa é somente para mostra uma fragilidade, python tolera 1000 chamadas
+_________________________________________________________
+#exemplos de built-int 
+nome = "thaianny"
+print(nome)
+
+lista =[1,2,3]
+print(len(lista))
+
+#pedi para voce escrever informações e armazenar no sistema
+#nome = input("Digite seu nome: ")
+
+#conversão de números
+numero_decimal ="6.3"
+numero_inteiro = int(float(numero_decimal))
+print(numero_inteiro)
+
+#número com casas decimais
+numero_str ="5.6"
+numero_float = float(numero_str)
+print(numero_float)
+
+#converte valor para texto
+numero =123
+numero_str = str(numero)
+print(numero_str)
+
+
