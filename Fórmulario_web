@@ -1,0 +1,92 @@
+Este é um formulario online para inserção de informações no banco, precisa de ajuste, mas já é possível inserir dados diratamente no banco, com um guia web, porém só funciona em localhost
+Eu troquei alguns dados, basta substituir pelos dados do seu banco.
+
+
+
+import streamlit as st
+import mysql.connector
+from datetime import date
+import pandas as pd
+
+st.set_page_config(page_title="COLOQUE_SEU_TITULO", layout="centered")
+
+st.title("FS POR ESTADO BRASIL")
+st.markdown("---")
+
+# Configuração do banco de dados
+DB_CONFIG = {
+    'host': 'COLOQUE_SEU_SERVIDOR',
+    'user': 'NOME_DO_USUARIO',
+    'password': 'SENHA_DO_SEU_BANCO',
+    'database': 'NOME_DO_SEU_BANCO'
+}
+
+
+def conectar_banco():
+    try:
+        conn = mysql.connector.connect(**DB_CONFIG)
+        return conn
+    except Exception as e:
+        st.error(f"Erro ao conectar ao banco: {e}")
+        return None
+
+
+def inserir_dados(Coluna_1, Coluna_2, Coluna_3, Coluna_4, Coluna_5):
+    conn = conectar_banco()
+    if conn:
+        try:
+            cursor = conn.cursor()
+            query = """
+                INSERT INTO NOME_DA_SUA_TABELA (Coluna_1, Coluna_2, Coluna_3, Coluna_4, Coluna_5)
+                VALUES (%s, %s, %s, %s, %s)
+            """
+            cursor.execute(query, (Coluna_1, Coluna_2, Coluna_3, Coluna_4, Coluna_5))
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return True
+        except Exception as e:
+            st.error(f"Erro ao inserir dados: {e}")
+            return False
+    return False
+
+
+
+# Formulário de inserção
+st.subheader("Inserir Novo Registro")
+
+col1, col2 = st.columns(2)
+
+with col1:
+   
+    Coluna_1 = st.date_input("Data", value=date.today())
+
+    
+    Coluna_2 = st.number_input("Estado (ID)", min_value=1, step=1, value=1)
+
+    
+    Coluna_3 = st.number_input("Commodity (ID)", min_value=1, step=1, value=1)
+
+with col2:
+    # Safra, eu deixei pré definido
+    season = st.text_input("Safra", value="2025/2026")
+
+    #Farmer Selling
+    Coluna_5 = st.number_input("FS", min_value=0.0, format="%.2f", step=0.01)
+
+st.markdown("---")
+
+# Botões de ação
+col_btn1, col_btn2, col_btn3 = st.columns([1, 1, 2])
+
+with col_btn1:
+    if st.button("Inserir", type="primary", use_container_width=True):
+        if inserir_dados(Coluna_1, Coluna_2, Coluna_3, Coluna_4, Coluna_5):
+            st.success("Dados inseridos com sucesso!")
+            st.rerun()
+        else:
+            st.error("Erro ao inserir dados")
+
+with col_btn2:
+    if st.button("Limpar", use_container_width=True):
+        st.rerun()
